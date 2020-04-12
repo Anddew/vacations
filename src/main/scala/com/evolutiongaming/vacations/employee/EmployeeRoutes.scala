@@ -13,7 +13,8 @@ import scala.util.{Failure, Success, Try}
 
 class EmployeeRoutes {
 
-  val employeeRoutes = HttpRoutes.of[IO] {
+  val employeeRoutes: HttpRoutes[IO] = HttpRoutes.of[IO] {
+
     case GET -> Root / "employee" / UUIDVar(uuid) =>
       Ok(s"Find employee $uuid")
 

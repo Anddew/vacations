@@ -29,7 +29,7 @@ libraryDependencies ++= Seq(
   "io.circe" %% "circe-optics" % circeVersion,
   "io.circe" %% "circe-parser" % circeVersion,
   "org.tpolecat" %% "doobie-core" % doobieVersion,
-  "org.tpolecat" %% "doobie-h2" % doobieVersion,
+  "org.tpolecat" %% "doobie-postgres" % doobieVersion,
   "org.mockito" %% "mockito-scala" % "1.11.2" % Test,
   "org.scalaj" %% "scalaj-http" % "2.4.2" % Test,
 )
