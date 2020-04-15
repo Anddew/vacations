@@ -1,6 +1,6 @@
 package com.evolutiongaming.vacations
 
-import java.time.Year
+import java.time.{LocalDate, Year}
 import java.util.UUID
 
 import cats.effect.{Blocker, ContextShift, IO, Resource}
@@ -9,9 +9,6 @@ import doobie.util.transactor.Transactor
 
 
 trait Db {
-
-  implicit val uuidMeta: Meta[UUID] = Meta[String].timap(UUID.fromString)(_.toString)
-  implicit val yearMeta: Meta[Year] = Meta[Int].timap(Year.of)(_.getValue)
 
   val transactor: Resource[IO, Transactor[IO]]
 

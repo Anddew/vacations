@@ -1,10 +1,10 @@
 package com.evolutiongaming.vacations.vacation
 
-import java.util.UUID
+import java.util.{Date, UUID}
 
 import cats.data.EitherT
 import cats.effect.IO
-import com.evolutiongaming.vacations.Service
+import io.circe._
 import io.circe.generic.auto._
 import io.circe.generic.semiauto._
 import org.http4s.HttpRoutes
@@ -13,24 +13,31 @@ import org.http4s.dsl.io._
 import org.http4s._
 import org.http4s.circe._
 import cats.implicits._
+import com.evolutiongaming.vacations.employee.Employee
+import io.circe.{Codec, Decoder, Encoder}
 
 import scala.util.{Failure, Success, Try}
 
 
-class VacationRoutes(private val vacationService: Service[Vacation]) {
+class VacationRoutes(private val vacationService: VacationService) {
+
+  implicit val employeeCodec: Codec[Employee] = deriveCodec[Employee]
+  implicit val periodCodec: Codec[Period] = deriveCodec[Period]
+  implicit val vacationCodec: Codec[Vacation] = deriveCodec[Vacation]
+
 
   val vacationRoutes: HttpRoutes[IO] = HttpRoutes.of[IO] {
 
     case GET -> Root / "vacations" =>
-      vacationService.getAll() *> Ok()
+      Ok(vacationService.getAll())
 
     case GET -> Root / "vacation" / UUIDVar(uuid) =>
       vacationService.get(uuid).flatMap {
-        case Some(vacation) => Ok(s"vacation $vacation")
-        case None           => Ok("No such vacation.")
+        case Some(vacation) => Ok(vacation)
+        case None           => Ok(s"No such vacation id - '$uuid'.")
       }
 
-    case req @ PUT -> Root / "vacation" =>
+    case req @ POST -> Root / "vacation" =>
       req.as[String].flatMap(vacation =>
         Ok(s"Add vacation '$vacation'")
       )
@@ -43,9 +50,9 @@ class VacationRoutes(private val vacationService: Service[Vacation]) {
         }
       }
 
-    case req @ POST -> Root / "vacation" =>
-      req.as[String].flatMap { vacation =>
-        Ok(s"Update vacation '$vacation'")
+    case req @ POST -> Root / "vacation"/ "new" =>
+      req.as[CreateVacation].flatMap { vacation =>
+        vacationService.add(vacation) *> Ok()
       }
 
   }

@@ -1,9 +1,7 @@
-package com.evolutiongaming.vacations.model
-
-import java.util.UUID
+package com.evolutiongaming.vacations.location
 
 
-sealed abstract class Location private(country: String, city: String)
+sealed case class Location private(country: String, city: String)
 
 object Location {
 

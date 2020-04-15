@@ -4,6 +4,8 @@ version := "0.1"
 
 scalaVersion := "2.13.1"
 
+mainClass in (Compile, run) := Some("com.evolutiongaming.vacations.VacationsApp")
+
 val http4sVersion = "0.21.1"
 val circeVersion = "0.13.0"
 val playVersion = "2.8.1"

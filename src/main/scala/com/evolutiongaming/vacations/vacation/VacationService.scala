@@ -3,28 +3,30 @@ package com.evolutiongaming.vacations.vacation
 import java.util.UUID
 
 import cats.effect.IO
-import com.evolutiongaming.vacations.{Repository, Service}
 
 
-class VacationService(private val vacationRepository: Repository[Vacation]) extends Service[Vacation] {
+class VacationService(private val vacationRepository: VacationRepository) {
 
-  override def getAll(): IO[List[Vacation]] = {
+  def getAll(): IO[List[Vacation]] = {
     vacationRepository.readAll()
   }
 
-  override def get(id: UUID): IO[Option[Vacation]] = {
+  def get(id: UUID): IO[Option[Vacation]] = {
     vacationRepository.read(id)
   }
 
-  override def add(entity: Vacation): IO[Unit] = ???
-  override def remove(id: UUID): IO[Unit] = ???
-  override def update(entity: Vacation): IO[Unit] = ???
+  def add(vacation: CreateVacation): IO[Unit] = {
+    vacationRepository.create(vacation)
+  }
+
+  def remove(id: UUID): IO[Unit] = ???
+  def update(entity: Vacation): IO[Unit] = ???
 
 }
 
 
 object VacationService {
 
-  def apply(vacationRepository: Repository[Vacation]): VacationService = new VacationService(vacationRepository)
+  def apply(vacationRepository: VacationRepository): VacationService = new VacationService(vacationRepository)
 
 }
