@@ -10,6 +10,7 @@ val http4sVersion = "0.21.1"
 val circeVersion = "0.13.0"
 val playVersion = "2.8.1"
 val doobieVersion = "0.8.8"
+val pureConfigVersion = "0.12.3"
 
 libraryDependencies ++= Seq(
   "org.typelevel" %% "cats-core" % "2.1.0",
@@ -34,6 +35,7 @@ libraryDependencies ++= Seq(
   "org.tpolecat" %% "doobie-postgres" % doobieVersion,
   "org.mockito" %% "mockito-scala" % "1.11.2" % Test,
   "org.scalaj" %% "scalaj-http" % "2.4.2" % Test,
+  "com.github.pureconfig" %% "pureconfig" % pureConfigVersion
 )
 
 addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.11.0" cross CrossVersion.full)

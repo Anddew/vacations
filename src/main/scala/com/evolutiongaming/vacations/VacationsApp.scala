@@ -2,18 +2,20 @@ package com.evolutiongaming.vacations
 
 import cats.effect.{ExitCode, IO, IOApp}
 import cats.implicits._
+import com.evolutiongaming.vacations.config.AppConfig
 import com.evolutiongaming.vacations.vacation.{VacationRepository, VacationRoutes, VacationService}
 import org.http4s.HttpRoutes
 import org.http4s.dsl.io._
 import org.http4s.implicits._
 import org.http4s.server.blaze.BlazeServerBuilder
 import com.evolutiongaming.vacations.dashboard.Dashboard.{routes => dashboardRoutes}
+import com.typesafe.config.ConfigFactory
 
 
 object VacationsApp extends IOApp {
 
-  val host = "localhost"
-  val port = 9000
+  val config = ConfigFactory.load()
+  val appConfig = AppConfig(config)
 
   val db = Db(contextShift)
   val vacationRepository = VacationRepository(db)
@@ -30,7 +32,7 @@ object VacationsApp extends IOApp {
 
   override def run(args: List[String]): IO[ExitCode] = {
     BlazeServerBuilder[IO]
-      .bindHttp(port, host)
+      .bindHttp(appConfig.server.port, appConfig.server.host)
       .withHttpApp(routes.orNotFound)
       .serve
       .compile
