@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VacationDashboard</title>
+    <script>
+        var url = new URL("http://localhost:9000/dashboard/update");
+        url.protocol = url.protocol.replace('http', 'ws');
+
+        ws = new WebSocket(url.href);
+
+        ws.onopen = function(evt) {
+            console.log('Connection established');
+        };
+
+        ws.onclose = function(evt) {
+            console.log('Disconnected from server');
+        };
+
+        ws.onmessage = function(evt) {
+            var dashboard = document.getElementById("dashboard");
+            dashboard.innerHTML = "<p>" + evt.data + "</p>" + dashboard.innerHTML;
+            console.log(evt.data);
+        };
+
+        ws.onerror = function(evt) {
+            console.error("WebSocket Error", evt)
+        }
+
+        function sendMessage() {
+            var input = document.getElementById("input");
+            ws.send(input.value);
+        }
+    </script>
+</head>
+<body>
+    <div>
+        <input id="input"/>
+        <button onclick="sendMessage()">SEND</button>
+    </div>
+    <div id="dashboard"></div>
+</body>
+</html>
