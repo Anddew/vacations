@@ -2,6 +2,8 @@ package com.evolutiongaming.vacations.vacation
 
 import java.time.LocalDate
 
+import com.evolutiongaming.vacations.VacationCommand
+
 
 final case class Period(start: LocalDate, until: LocalDate)
 
