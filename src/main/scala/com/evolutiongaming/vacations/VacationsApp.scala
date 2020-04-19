@@ -7,6 +7,7 @@ import org.http4s.HttpRoutes
 import org.http4s.dsl.io._
 import org.http4s.implicits._
 import org.http4s.server.blaze.BlazeServerBuilder
+import com.evolutiongaming.vacations.dashboard.Dashboard.{routes => dashboardRoutes}
 
 
 object VacationsApp extends IOApp {
@@ -25,7 +26,7 @@ object VacationsApp extends IOApp {
       Ok("test")
   }
 
-  val routes = testRoute <+> vacationRoutes.vacationRoutes
+  val routes = testRoute <+> vacationRoutes.vacationRoutes <+> dashboardRoutes
 
   override def run(args: List[String]): IO[ExitCode] = {
     BlazeServerBuilder[IO]
