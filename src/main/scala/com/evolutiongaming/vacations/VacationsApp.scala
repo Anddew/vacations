@@ -17,6 +17,8 @@ object VacationsApp extends IOApp {
   val config = ConfigFactory.load()
   val appConfig = AppConfig(config)
 
+  implicit val inboundDecoder
+
   val db = Db(contextShift)
   val vacationRepository = VacationRepository(db)
   val vacationService = VacationService(vacationRepository)
